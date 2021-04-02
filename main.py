@@ -18,4 +18,21 @@ while rule < 1 or rule > 256:
         break
     print("Error, please retype your input")
 
-setrule = []
+# Rule in binary list
+setrule = [0, 0, 0, 0, 0, 0, 0, 0]
+q = rule
+r = 0
+for i in setrule:
+    q = q / 2
+    r = q % 2
+    if r == 0:
+        setrule[i] = 0
+    else:
+        setrule[i] = 1
+        if q == 1:
+            break
+    
+for i in setrule:
+    print(setrule[7-i])
+
+
