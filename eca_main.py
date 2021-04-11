@@ -41,13 +41,13 @@ def CA_run(initial_state, n_steps, rule_number):
 # color map using binary
 plt.rcParams['image.cmap'] = 'binary'
 
-rng = np.random.RandomState(0)
+#rng = np.random.RandomState(0)
 data = CA_run(rng.randint(0, 2, 100), 50, 173)
 
 # Pyramid pattern
-#initial = np.zeros(300)
-#initial[300//2] = 1
-#data = CA_run(initial, 150, 30)
+initial = np.zeros(300)
+initial[300//2] = 1
+data = CA_run(initial, 150, 30)
 
 # set figure size
 fig, ax = plt.subplots(figsize=(10, 5))
@@ -57,3 +57,20 @@ ax.matshow(data)
 ax.axis(False);
 # show the plotted graph
 plt.show()
+
+"""def plot_CA_class(rule_list, class_label):
+    rng = np.random.RandomState(seed = 0)
+    fig, axs = plt.subplots(1, len(rule_list), figsize=(10, 3.5), contrained_layout=True)
+    initial = rng.randint(0,2,100)
+    
+    for i, ax in enumerate(axs.ravel()):
+        data = CA_run(initial, 100, rulelist[i])
+        ax.set_title(f'Rule {rule_list[i]}')
+        ax.matshow(data)
+        ax.axis(False)
+        
+        fig.suptitle(class_label, fontsize=16)
+        
+        return fig, ax
+    
+_ = plot_CA_class([4,32,172], 'Class One')"""
