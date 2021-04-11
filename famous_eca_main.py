@@ -23,19 +23,19 @@ DYING = 128
 vals = [ON, DYING, OFF]
 
 # populate grid with random values
-grid = np.random.choice(vals, N*N, p=[0.1,0.1,0.8]).reshape(N, N)
+grid = np.random.choice(vals, N*N, p=[0.4,0.1,0.5]).reshape(N, N)
 
 # for all OFF values to test other objects, comment out line 24 and uncomment line 26
 #grid = np.random.choice(vals, N*N, p=[0,0,1]).reshape(N, N)
 
 
-# Delete quotations for glider
-"""test = [[OFF, ON, DYING, OFF, OFF],
+# Delete quotations for oscillator
+"""osc = [[OFF, ON, DYING, OFF, OFF],
         [DYING, OFF, OFF, ON, OFF],
         [ON, OFF, OFF, DYING, OFF],
         [OFF, DYING, ON, OFF, OFF]]
 
-grid[1:5, 1:6] = test
+grid[1:5, 1:6] = osc
 """
 def update(data):
   global grid
@@ -58,11 +58,10 @@ def update(data):
       if grid[i, j] == ON:       # if alive, start dying
           newGrid[i, j] = DYING     
       elif grid[i, j] == DYING:     # if dying, die
-          newGrid[i, j] = OFF
-      else:    # else if dead, and alive neighbors total 2, then become alive
-          if grid[i, j] == OFF:
-              if total == 3:
-                newGrid[i, j] = ON  
+          newGrid[i, j] = OFF    
+      elif grid[i, j] == OFF:   # else if dead, and alive neighbors total 2, then become alive
+          if total >= 2 and total < 4:
+            newGrid[i, j] = ON  
           
   # update data
   mat.set_data(newGrid)
@@ -70,8 +69,9 @@ def update(data):
   return [mat]
 
 # set animation
+plt.rcParams['image.cmap'] = 'binary'
 fig, ax = plt.subplots()
 mat = ax.matshow(grid)
-ani = animation.FuncAnimation(fig, update, interval=900,
-                              save_count=900)
+ani = animation.FuncAnimation(fig, update, interval=10000,
+                              save_count=10000)
 plt.show()
