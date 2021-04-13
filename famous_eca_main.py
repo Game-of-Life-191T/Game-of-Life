@@ -19,24 +19,24 @@ import matplotlib.animation as animation
 N = 10
 ON = 256
 OFF = 0
-DYING = 128
+DYING = 1
 vals = [ON, DYING, OFF]
 
 # populate grid with random values
-grid = np.random.choice(vals, N*N, p=[0.1,0.1,0.8]).reshape(N, N)
+#grid = np.random.choice(vals, N*N, p=[0.1,0.1,0.8]).reshape(N, N)
 
 # for all OFF values to test other objects, comment out line 24 and uncomment line 26
-#grid = np.random.choice(vals, N*N, p=[0,0,1]).reshape(N, N)
+grid = np.random.choice(vals, N*N, p=[0,0,1]).reshape(N, N)
 
 
 # Delete quotations for glider
-"""test = [[OFF, ON, DYING, OFF, OFF],
+test = [[OFF, ON, DYING, OFF, OFF],
         [DYING, OFF, OFF, ON, OFF],
         [ON, OFF, OFF, DYING, OFF],
         [OFF, DYING, ON, OFF, OFF]]
 
 grid[1:5, 1:6] = test
-"""
+
 def update(data):
   global grid
   # copy grid since we require 8 neighbors for calculation
@@ -52,26 +52,37 @@ def update(data):
                grid[(i+1)%N, (j-1)%N] + grid[(i+1)%N, (j+1)%N])/256
       
       # apply Brian's brain rules based on total (kind of)      
-      # 1 = alive
-      # 3 = dying
-      # 0 = dead   
+      # black = alive
+      # grey = dying
+      # white = dead   
       if grid[i, j] == ON:       # if alive, start dying
           newGrid[i, j] = DYING     
       elif grid[i, j] == DYING:     # if dying, die
           newGrid[i, j] = OFF
       else:    # else if dead, and alive neighbors total 2, then become alive
           if grid[i, j] == OFF:
-              if total == 3:
+              if total >= 2 and total < 3:
                 newGrid[i, j] = ON  
           
   # update data
-  mat.set_data(newGrid)
+  tempGrid = newGrid.copy()
+  for i in range(N):
+        for j in range(N):
+              if tempGrid[i, j] == 1:
+                    tempGrid[i, j] = 128
+  mat.set_data(tempGrid)
   grid = newGrid
   return [mat]
 
 # set animation
 fig, ax = plt.subplots()
-mat = ax.matshow(grid)
-ani = animation.FuncAnimation(fig, update, interval=900,
-                              save_count=900)
+plt.rcParams['image.cmap'] = 'binary'
+tempGrid = grid.copy()
+for i in range(N):
+      for j in range(N):
+             if tempGrid[i, j] == 1:
+                   tempGrid[i, j] = 128
+mat = ax.matshow(tempGrid)
+ani = animation.FuncAnimation(fig, update, interval=1000,
+                              save_count=1000)
 plt.show()
