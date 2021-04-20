@@ -40,7 +40,7 @@ def CA_run(initial_state, n_steps, rule_number):
 
 # color map using binary
 plt.rcParams['image.cmap'] = 'binary'
-"""
+
 rng = np.random.RandomState(0)
 data = CA_run(rng.randint(0, 2, 100), 50, 110)
 
@@ -57,7 +57,7 @@ ax.matshow(data)
 ax.axis(False);
 # show the plotted graph
 plt.show()
-"""
+
 
 def plot_CA_class(rule_list, class_label):
     rng = np.random.RandomState(seed=0)
