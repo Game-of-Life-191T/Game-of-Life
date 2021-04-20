@@ -29,7 +29,7 @@ vals = [ON, DYING, OFF]
 grid = np.random.choice(vals, N*N, p=[0,0,1]).reshape(N, N)
 
 
-# Delete quotations for glider
+# Delete quotations for oscillator
 test = [[OFF, ON, DYING, OFF, OFF],
         [DYING, OFF, OFF, ON, OFF],
         [ON, OFF, OFF, DYING, OFF],
@@ -61,7 +61,7 @@ def update(data):
           newGrid[i, j] = OFF
       else:    # else if dead, and alive neighbors total 2, then become alive
           if grid[i, j] == OFF:
-              if total >= 2 and total < 3:
+              if total >= 2 and total < 3: # take into account of small variances due to DYING = 1
                 newGrid[i, j] = ON  
           
   # update data
